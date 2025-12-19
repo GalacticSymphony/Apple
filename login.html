@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .login-form {
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 300px;
+        }
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-form button:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-form">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Log In</button>
+        </form>
+        <p id="error-message" class="error-message">Invalid username or password.</p>
+    </div>
+
+    <script>
+        // URL to the raw JSON file in your GitHub repository
+        const usersJsonUrl = "https://raw.githubusercontent.com/yourusername/yourrepo/main/users.json"; // Replace with your GitHub raw URL
+
+        // Function to fetch users from the JSON file
+        async function fetchUsers() {
+            const response = await fetch(usersJsonUrl);
+            const users = await response.json();
+            return users;
+        }
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Get entered username and password
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Fetch users from the GitHub raw JSON file
+            const users = await fetchUsers();
+
+            // Check if the entered username and password match any user
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                alert("Login successful!");
+                // Redirect to a different page or perform actions after successful login
+                // window.location.href = "welcome.html";  // Example redirect
+            } else {
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>
